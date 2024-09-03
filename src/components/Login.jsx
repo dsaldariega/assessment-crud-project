@@ -10,11 +10,8 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_URL_API_PROD}`,
-        {
-          username,
-          password,
-        }
+        `${process.env.REACT_APP_URL_API_PROD}/user/auth/signin`,
+        { username, password }
       );
       const { user } = response.data; // Adjust based on your API response structure
       onLogin(user);
