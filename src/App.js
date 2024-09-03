@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     if (user) {
       axios
-        .get("http://localhost:5000/posts")
+        .get(`${process.env.REACT_APP_URL_API_PROD}/posts`)
         .then((response) => setPosts(response.data))
         .catch((error) => console.error("Error fetching posts:", error));
     }

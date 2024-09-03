@@ -23,7 +23,7 @@ const PostForm = ({ onPostCreated, onPostUpdated, posts }) => {
     const post = { title, body };
     if (id) {
       axios
-        .put(`http://localhost:5000/posts/${id}`, post)
+        .put(`${process.env.REACT_APP_URL_API_PROD}/${id}`, post)
         .then((response) => {
           onPostUpdated(response.data);
           navigate("/");
@@ -33,7 +33,7 @@ const PostForm = ({ onPostCreated, onPostUpdated, posts }) => {
 
     if (!id) {
       axios
-        .post("http://localhost:5000/posts", post)
+        .post(`${process.env.REACT_APP_URL_API_PROD}`, post)
         .then((response) => {
           onPostCreated(response.data);
           navigate("/");

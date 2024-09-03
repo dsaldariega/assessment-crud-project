@@ -13,10 +13,13 @@ const PostList = ({ posts, setPosts }) => {
   const handleCreatePost = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/posts", {
-        title: newPostTitle,
-        body: newPostBody,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL_API_PROD}/posts`,
+        {
+          title: newPostTitle,
+          body: newPostBody,
+        }
+      );
       setPosts([...posts, response.data]);
       setNewPostTitle("");
       setNewPostBody("");
@@ -30,7 +33,7 @@ const PostList = ({ posts, setPosts }) => {
     e.preventDefault(); // Prevent page refresh
     try {
       const response = await axios.put(
-        `http://localhost:5000/posts/${editingPostId}`,
+        `${process.env.REACT_APP_URL_API_PROD}/posts/${editingPostId}`,
         {
           title: editingTitle,
           body: editingBody,
@@ -50,7 +53,7 @@ const PostList = ({ posts, setPosts }) => {
 
   const handleDeletePost = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/posts/${id}`);
+      await axios.delete(`${process.env.REACT_APP_URL_API_PROD}/posts/${id}`);
       setPosts(posts.filter((post) => post._id !== id));
     } catch (error) {
       setError("Error deleting post");

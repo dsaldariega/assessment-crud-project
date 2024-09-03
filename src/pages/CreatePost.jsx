@@ -11,7 +11,11 @@ const CreatePost = ({ getAllPosts }) => {
     e.preventDefault();
     const user = localStorage.getItem("user");
     try {
-      await axios.post("http://localhost:5000/posts", { title, body, user });
+      await axios.post(`${process.env.REACT_APP_URL_API_PROD}/posts`, {
+        title,
+        body,
+        user,
+      });
       getAllPosts();
     } catch (error) {
       console.error("Error creating post");
