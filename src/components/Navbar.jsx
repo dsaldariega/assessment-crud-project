@@ -15,10 +15,9 @@ const Navbar = ({ user, onLogout }) => {
               </button>
             </>
           ) : (
-            // <Link to="/" className="text-white px-4">
-            //   Login
-            // </Link>
-            <></>
+            <Link to="/register" className="text-white mr-4">
+              Register
+            </Link>
           )}
         </div>
       </div>
