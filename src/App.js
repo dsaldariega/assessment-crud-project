@@ -1,24 +1,81 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import axios from "axios";
+import Navbar from "./components/Navbar";
+import PostList from "./components/PostList";
+import PostForm from "./components/PostForm";
+import Login from "./components/Login";
 
 function App() {
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get("http://localhost:5000/posts")
+        .then((response) => setPosts(response.data))
+        .catch((error) => console.error("Error fetching posts:", error));
+    }
+  }, [user]);
+
+  const handleLogin = (user) => {
+    setUser(user);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar user={user} onLogout={handleLogout} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              user ? (
+                <PostList posts={posts} setPosts={setPosts} />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
+            }
+          />
+          <Route
+            path="/create"
+            element={
+              user ? (
+                <PostForm
+                  onPostCreated={(post) => setPosts([...posts, post])}
+                />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
+            }
+          />
+          <Route
+            path="/edit/:id"
+            element={
+              user ? (
+                <PostForm
+                  posts={posts}
+                  onPostUpdated={(updatedPost) =>
+                    setPosts(
+                      posts.map((post) =>
+                        post._id === updatedPost._id ? updatedPost : post
+                      )
+                    )
+                  }
+                />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
